@@ -25,9 +25,11 @@ struct Particle {
 
 inline std::ostream& operator<< (std::ostream& stream, const Particle& p) {
    stream << "Particle{"
+     << " id:" << p.id
      << " x:" << p.x
      << " y:" << p.y
      << " theta:" << p.theta
+     << " weight:" << p.weight
      << " }" << std::endl;
    return stream;
 }
@@ -48,6 +50,9 @@ class ParticleFilter {
   const double EPSILON = 0.001;
   std::default_random_engine gen;
 
+  void convertToMap(const Particle &p, std::vector<LandmarkObs> &observations);
+
+  std::vector<const LandmarkObs>::iterator getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks);
 public:
 
 	// Set of current particles
