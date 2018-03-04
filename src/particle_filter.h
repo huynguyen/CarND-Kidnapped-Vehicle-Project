@@ -10,6 +10,7 @@
 #define PARTICLE_FILTER_H_
 
 #include "helper_functions.h"
+#include <random>
 
 struct Particle {
 	int id;
@@ -44,6 +45,8 @@ class ParticleFilter {
 
 	// Vector of weights of all particles
 	std::vector<double> weights;
+  const double EPSILON = 0.001;
+  std::default_random_engine gen;
 
 public:
 
