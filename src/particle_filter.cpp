@@ -26,19 +26,17 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
   num_particles = 10;
+  particles.reserve(num_particles);
+  weights.reserve(num_particles);
 
   normal_distribution<double> dist_x(x, std[0]);
   normal_distribution<double> dist_y(y, std[1]);
   normal_distribution<double> dist_theta(theta, std[2]);
 
   for(int i=0; i < num_particles; i++) {
-    auto p = Particle();
-    p.id = i;
-    p.x = dist_x(gen);
-    p.y = dist_y(gen);
-    p.theta = dist_theta(gen);
-    p.weight = 1.0;
-    particles.emplace_back(p);
+    particles.emplace_back(
+        Particle{i, dist_x(gen), dist_y(gen), dist_theta(gen), 1.0 }
+    );
   }
 
   is_initialized = true;
@@ -118,7 +116,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     }
 
     std::vector<LandmarkObs> mapObservations = observations;
-    convertToMap(p, mapObservations);
+    convertToMapCoordinates(p, mapObservations);
     dataAssociation(landmarks, mapObservations);
 
     std::vector<double> weight_accumulator;
@@ -147,7 +145,7 @@ std::vector<const LandmarkObs>::iterator ParticleFilter::getAssociatedLandmark(c
   return result;
 }
 
-void ParticleFilter::convertToMap(const Particle &p, std::vector<LandmarkObs> &observations) {
+void ParticleFilter::convertToMapCoordinates(const Particle &p, std::vector<LandmarkObs> &observations) {
   double sin_theta = sin(p.theta);
   double cos_theta = cos(p.theta);
   for(auto &obs: observations) {
@@ -177,7 +175,7 @@ Particle ParticleFilter::SetAssociations(Particle& particle, const std::vector<i
     // associations: The landmark id that goes along with each listed association
     // sense_x: the associations x mapping already converted to world coordinates
     // sense_y: the associations y mapping already converted to world coordinates
-    particle.associations= associations;
+    particle.associations = associations;
     particle.sense_x = sense_x;
     particle.sense_y = sense_y;
     return particle;

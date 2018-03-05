@@ -50,7 +50,7 @@ class ParticleFilter {
   const double EPSILON = 0.001;
   std::default_random_engine gen;
 
-  void convertToMap(const Particle &p, std::vector<LandmarkObs> &observations);
+  void convertToMapCoordinates(const Particle &p, std::vector<LandmarkObs> &observations);
 
   std::vector<const LandmarkObs>::iterator getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks);
 public:
