@@ -136,8 +136,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     weights.emplace_back(p.weight);
   }
 }
-
-std::vector<const LandmarkObs>::iterator ParticleFilter::getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks) {
+std::vector<LandmarkObs>::const_iterator ParticleFilter::getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks) {
   int id = obs.id;
   auto result = std::find_if(landmarks.begin(), landmarks.end(), [id] (LandmarkObs const &lm) {
       return id == lm.id;

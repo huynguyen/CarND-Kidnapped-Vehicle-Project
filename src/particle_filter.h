@@ -52,7 +52,7 @@ class ParticleFilter {
 
   void convertToMapCoordinates(const Particle &p, std::vector<LandmarkObs> &observations);
 
-  std::vector<const LandmarkObs>::iterator getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks);
+  std::vector<LandmarkObs>::const_iterator getAssociatedLandmark(const LandmarkObs &obs,const std::vector<LandmarkObs> &landmarks);
 public:
 
 	// Set of current particles
